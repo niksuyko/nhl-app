@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700&display=swap');
+
+.header {
+    background-color: #222129;
+    height: 120px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'M PLUS 1p', sans-serif;
+    
+}
+
+.header-title {
+    font-size: 80px;
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,74 @@
+.nhl-team-container-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    width: 100%;
+    position: relative;
+    height: 50vh;
+    flex-direction: column;
+}
+
+.nhl-team-container {
+    display: flex;
+    padding: 0 56px;
+    gap: 60px;
+}
+
+.scroll-arrow {
+    cursor: pointer;
+    color: #222129;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.scroll-arrow:first-child {
+    left: 65px;
+}
+
+.scroll-arrow:last-child {
+    right: 65px;
+}
+
+.search-bar {
+    position: static;
+    padding: 10px;
+    font-size: 35px;
+    border: none;
+    width: 300px;
+    background: transparent;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    margin-top: 100px;
+}
+
+.search-bar::placeholder {
+    color: rgb(0, 0, 0);
+    opacity: 0.5;
+}
+
+.search-bar:focus {
+    outline: none;
+}
+
+@media (max-height: 700px) {
+    .nhl-team-container-wrapper {
+        height: 400px;
+        align-items: center;
+    }
+
+    .nhl-team-container {
+        flex-wrap: nowrap;
+    }
+
+    .scroll-arrow {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .search-bar {
+        margin-bottom: 50px;
+    }
+}

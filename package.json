@@ -1,0 +1,14 @@
+{
+    "name": "nhl_react_project",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "install-client": "cd nhl_client && npm install",
+        "install-server": "cd nhl_server && npm install",
+        "install-all": "npm install concurrently && npm run install-client && npm run install-server",
+        "build": "concurrently \"npm run server --prefix nhl_server\" \"npm start --prefix nhl_client\""
+    },
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
