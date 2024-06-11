@@ -1,4 +1,0 @@
-node_modules
-./nhl_client/node_modules
-package-lock.json
-./nhl_server/node_modules
