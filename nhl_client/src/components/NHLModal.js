@@ -7,7 +7,7 @@ import PlayerTable from './PlayerTable';
 import axios from 'axios';
 import './NHLModal.css';
 
-// component to conditionally render tab content
+// component to conditionally render tab content (regular vs playoff)
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -35,6 +35,7 @@ const NewModal = ({ open, handleClose, team }) => {
     const [goalieDataPlayoff, setGoalieDataPlayoff] = useState([]);
     const [playerDataPlayoff, setPlayerDataPlayoff] = useState([]);
     const [tabIndex, setTabIndex] = useState(0);
+    // initially sort player + goalie data by games played descending
     const [sortConfigPlayer, setSortConfigPlayer] = useState({ key: 'gamesPlayed', direction: 'desc' });
     const [sortConfigGoalie, setSortConfigGoalie] = useState({ key: 'gamesPlayed', direction: 'desc' });
 
@@ -80,7 +81,7 @@ const NewModal = ({ open, handleClose, team }) => {
         setPlayerDataPlayoff([]);
     }, [team]);
 
-    // handle sorting request for player data
+    // toggle sort direction 
     const requestSortPlayer = (key) => {
         let direction = 'desc';
         if (sortConfigPlayer.key === key && sortConfigPlayer.direction === 'desc') {
@@ -91,7 +92,7 @@ const NewModal = ({ open, handleClose, team }) => {
         setSortConfigPlayer({ key, direction });
     };
 
-    // handle sorting request for goalie data
+    // toggle sort direction
     const requestSortGoalie = (key) => {
         let direction = 'desc';
         if (sortConfigGoalie.key === key && sortConfigGoalie.direction === 'desc') {

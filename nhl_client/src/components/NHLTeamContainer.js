@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import NHLTeamCard from './NHLTeamCard';
 import './NHLTeamContainer.css';
 import ChevronLeftOutlined from '@mui/icons-material/ChevronLeftOutlined';
@@ -18,15 +18,20 @@ const NHLTeamContainer = ({ teams, handleOpen }) => {
     useEffect(() => {
         if (teams.length > 0) {
             const sorted = [...teams].sort((a, b) => {
+                //if team 'a' has upcoming game and 'b' doesnt, it will be ordered first
                 if (a.upcomingGame && !b.upcomingGame) {
                     return -1;
                 }
+                //if team 'b' has an upcoming game and 'a' doesnt, it will be ordered first
                 if (!a.upcomingGame && b.upcomingGame) {
                     return 1;
                 }
+                //if both teams either have/dont have a playoff game, they are sorted by points
+                //if positive value is returned, 'b' is placed before 'a'
                 return b.points - a.points;
             });
             setSortedTeams(sorted);
+            //set loading skeleton off when team arr length > 0 (aka there are teams to render)
             setLoading(false);
         }
     }, [teams]);
@@ -39,7 +44,7 @@ const NHLTeamContainer = ({ teams, handleOpen }) => {
             const cardsToShow = Math.min(4, Math.floor(containerWidth / cardWidth)); // Max 4 cards
             setVisibleCards(cardsToShow < 1 ? 1 : cardsToShow);
         };
-
+        // account for initial 
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -60,40 +65,44 @@ const NHLTeamContainer = ({ teams, handleOpen }) => {
         team.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // scroll left to show the previous card
+    const scrollLeft = useCallback(() => {
+        if (currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+        }
+    }, [currentIndex]);
+
+    // scroll right to show the next card
+    const scrollRight = useCallback(()=> {
+        if (currentIndex < filteredTeams.length - visibleCards) {
+            setCurrentIndex(currentIndex + 1);
+        }
+    }, [currentIndex, filteredTeams.length, visibleCards]);
+
     // handle arrow key navigation
     useEffect(() => {
         const handleKeyDown = (event) => {
+            // determine if search bar or other input element is focused
             const activeElement = document.activeElement;
+            // flag
             const isInputFocused = activeElement.tagName === 'INPUT' && activeElement.type === 'text';
-
+    
             if (isInputFocused) {
-                return; // dont trigger scroll if an input element is focused
+                return; // dont trigger scroll if an input element (search bar) is focused
             }
-
+            // if no input field in focus, handle scroll functions 
             if (event.key === 'ArrowLeft') {
-                scrollLeft();
+               scrollLeft();
             } else if (event.key === 'ArrowRight') {
                 scrollRight();
             }
         };
 
+        // upon keydown, run handle function
         window.addEventListener('keydown', handleKeyDown);
+        // event listener cleanup
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [currentIndex, visibleCards, filteredTeams.length]);
-
-    // scroll left to show the previous card
-    const scrollLeft = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-        }
-    };
-
-    // scroll right to show the next card
-    const scrollRight = () => {
-        if (currentIndex < filteredTeams.length - visibleCards) {
-            setCurrentIndex(currentIndex + 1);
-        }
-    };
+    }, [scrollLeft, scrollRight, currentIndex, visibleCards, filteredTeams.length]);
 
     return (
         <>

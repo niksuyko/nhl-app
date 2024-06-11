@@ -13,11 +13,14 @@ const PlayerTable = ({ title, playerData, sortConfig, requestSort, type }) => {
     const sortData = (data) => {
         const sortedData = [...data];
         sortedData.sort((a, b) => {
+            // handle name sorting
             if (sortConfig.key === 'name') {
-                const nameA = `${a.firstName.default} ${a.lastName.default}`.toLowerCase();
-                const nameB = `${b.firstName.default} ${b.lastName.default}`.toLowerCase();
-                return sortConfig.direction === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+                const nameA = `${a.firstName.default}`.toLowerCase();
+                const nameB = `${b.firstName.default}`.toLowerCase();
+                // i dont know why this keeps sorting names incorrectly when its set to 'asc'
+                return sortConfig.direction === 'desc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
             } else {
+                // numerical sorting
                 const compareA = a[sortConfig.key];
                 const compareB = b[sortConfig.key];
                 if (compareA < compareB) return sortConfig.direction === 'asc' ? -1 : 1;

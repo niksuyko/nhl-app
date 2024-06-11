@@ -3,16 +3,11 @@ import './NHLTeamCard.css';
 import NewModal from './NHLModal.js';
 
 const NHLTeamCard = ({ team }) => {
-    // State to control the modal open/close status
     const [open, setOpen] = useState(false);
-
-    // Function to handle opening the modal
     const handleOpen = () => setOpen(true);
-
-    // Function to handle closing the modal
     const handleClose = () => setOpen(false);
 
-    // Function to format the date string
+    // format the date string
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const options = {
